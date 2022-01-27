@@ -7,6 +7,7 @@ import { ChainId, ROUTER_ADDRESS } from '@sushiswap/core-sdk'
 import IUniswapV2Router02ABI from 'app/constants/abis/uniswap-v2-router-02.json'
 import IUniswapV2Router02NoETHABI from 'app/constants/abis/uniswap-v2-router-02-no-eth.json'
 import { isAddress } from 'app/functions/validate'
+import store from 'app/state'
 
 // account is not optional
 export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
@@ -19,11 +20,22 @@ export function getProviderOrSigner(library: Web3Provider, account?: string): We
 }
 
 // account is optional
-export function getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
+export function _getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
   return new Contract(address, ABI, getProviderOrSigner(library, account))
+}
+
+export function getContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
+  const { account, library } = store.getState().web3Context
+  if (!address || address === AddressZero || !ABI || !library) return null
+  try {
+    return _getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+  } catch (error) {
+    console.error('Failed to get contract', error)
+    return null
+  }
 }
 
 export function getRouterAddress(chainId?: ChainId) {
@@ -33,9 +45,11 @@ export function getRouterAddress(chainId?: ChainId) {
   return ROUTER_ADDRESS[chainId]
 }
 
+const test = IUniswapV2Router02ABI
+
 // account is optional
 export function getRouterContract(chainId: number, library: Web3Provider, account?: string): Contract {
-  return getContract(
+  return _getContract(
     getRouterAddress(chainId),
     chainId !== ChainId.CELO ? IUniswapV2Router02ABI : IUniswapV2Router02NoETHABI,
     library,

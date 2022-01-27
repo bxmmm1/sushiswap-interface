@@ -4,10 +4,10 @@ import { useAppDispatch } from 'app/state/hooks'
 import { FC, useEffect, useMemo } from 'react'
 
 const SyncWeb3Context = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
   const dispatch = useAppDispatch()
 
-  const objToSync = useMemo(() => ({ account, chainId }), [account, chainId])
+  const objToSync = useMemo(() => ({ account, chainId, library }), [account, chainId, library])
 
   useEffect(() => {
     dispatch(updateWeb3Context(objToSync))

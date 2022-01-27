@@ -6,6 +6,7 @@ import { AppState } from 'app/state'
 export interface Web3ReactContext {
   chainId?: ChainId
   account?: Web3ReactContextInterface['account']
+  library?: Web3ReactContextInterface['library']
 }
 
 const initialState: Web3ReactContext = {}

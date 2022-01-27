@@ -62,8 +62,9 @@ import UNI_FACTORY_ABI from 'app/constants/abis/uniswap-v2-factory.json'
 import IUniswapV2PairABI from 'app/constants/abis/uniswap-v2-pair.json'
 import WETH9_ABI from 'app/constants/abis/weth.json'
 import ZENKO_ABI from 'app/constants/abis/zenko.json'
-import { getContract } from 'app/functions'
+import { _getContract, getContract } from 'app/functions'
 import { useActiveWeb3React } from 'app/services/web3'
+import store from 'app/state'
 import { useMemo } from 'react'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -78,12 +79,16 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
   return useMemo(() => {
     if (!address || address === AddressZero || !ABI || !library) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      return _getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
   }, [address, ABI, library, withSignerIfPossible, account])
+}
+
+export function getTokenContractNonHook(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return getContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
@@ -260,6 +265,15 @@ export function useMasterDeployerContract(withSignerIfPossible?: boolean): Contr
   // @ts-ignore TYPE NEEDS FIXING
   const masterDeployer = TRIDENT[chainId]?.[CHAIN_KEY[chainId]]?.contracts.MasterDeployer
   return useContract(masterDeployer?.address, masterDeployer?.abi, withSignerIfPossible)
+}
+
+export function getConstantProductPoolFactory(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = store.getState().web3Context
+  if (!chainId) return null
+
+  // @ts-ignore TYPE NEEDS FIXING
+  const factory = TRIDENT[chainId]?.[CHAIN_KEY[chainId]]?.contracts.ConstantProductPoolFactory
+  return getContract(factory?.address, factory?.abi, withSignerIfPossible)
 }
 
 export function useConstantProductPoolFactory(withSignerIfPossible?: boolean): Contract | null {
