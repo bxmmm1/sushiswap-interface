@@ -233,6 +233,7 @@ export const ADDITIONAL_BASES: {
     [MATIC.AXMATIC.address]: [MATIC.DMAGIC],
     [MATIC.BCT.address]: [MATIC.KLIMA],
     [MATIC.KLIMA.address]: [MATIC.BCT],
+    [MATIC.GEN.address]: [MATIC.THEOS],
     //[MATIC.DMAGIC.address]: [MATIC.DRAX, MATIC.AXMATIC],
   },
 }
