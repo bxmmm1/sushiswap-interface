@@ -13,6 +13,8 @@ export const FXS = new Token(ChainId.MATIC, '0x3e121107F6F22DA4911079845a470757a
 export const DMAGIC = new Token(ChainId.MATIC, '0x61dAECaB65EE2A1D5b6032df030f3fAA3d116Aa7', 18, 'DMAGIC', 'Dark Magic')
 export const DRAX = new Token(ChainId.MATIC, '0x1Ba3510A9ceEb72E5CdBa8bcdDe9647E1f20fB4b', 18, 'DRAX', 'Drax')
 export const AXMATIC = new Token(ChainId.MATIC, '0x1221591c1d77A9c334aBb0fe530ae6EE3aF51Af9', 18, 'AXMATIC', 'axMATIC')
+export const GEN = new Token(ChainId.MATIC, '0xe3e77171b0cccc2293ea48f0430f75f1a6103f78', 18, 'GEN', 'Genesis')
+export const THEOS = new Token(ChainId.MATIC, '0xdb982a636807b3acd9fd28a99410b68c2159fb32', 18, 'THEOS', 'Theos')
 export const KLIMA = new Token(ChainId.MATIC, '0x4e78011Ce80ee02d2c3e649Fb657E45898257815', 9, 'Klima DAO', 'KLIMA')
 export const BCT = new Token(
   ChainId.MATIC,
